@@ -14,9 +14,10 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  */
 public class NotePad extends JFrame implements ActionListener, WindowListener {
     
-    
-     // Text component
+    ObjectFactory nesneler = new ObjectFactory();
+    // Text component
     JTextArea jta = new JTextArea(); 
+    JFileChooser jfc;
     
     File fnameContainer;
     
@@ -43,6 +44,7 @@ public NotePad(){
     createMenuItem(jmfile,"New");
     createMenuItem (jmfile,"Open");
     createMenuItem(jmfile,"Save");
+    createMenuItem(jmfile,"Save As");
   
     jmfile.addSeparator();
     createMenuItem(jmfile,"Exit") ;
@@ -79,7 +81,9 @@ public void createMenuItem(JMenu jm, String txt) {
 
 public void actionPerformed(ActionEvent e){
     
-    JFileChooser jfc = new JFileChooser();
+    
+    jfc = nesneler.getFileChooser();
+    
     if(e.getActionCommand().equals("New")){
         this.setTitle("Untitled.txt-Notepad");
         jta.setText("");
@@ -103,6 +107,42 @@ public void actionPerformed(ActionEvent e){
         else{
             jfc.setSelectedFile(new File("Untitled.txt"));
         }
+        //int ret = jfc.showSaveDialog(null);
+
+        /*if (ret == JFileChooser.APPROVE_OPTION){
+            try{
+                File fyl = jfc.getSelectedFile();
+                SaveFile(fyl.getAbsolutePath());
+                this.setTitle(fyl.getName()+" - Notepad");
+                fnameContainer = fyl;
+            }catch(Exception ets){}
+            
+        } */
+        
+        try{
+            File fyl = jfc.getSelectedFile();
+            SaveFile(fyl.getAbsolutePath());
+            this.setTitle(fyl.getName()+" - Notepad");
+            fnameContainer = fyl;
+        }catch(Exception ets){}
+        
+        
+    }else if (e.getActionCommand().equals("Exit")){
+        Exiting();
+    }else if (e.getActionCommand().equals("Copy")){
+        jta.copy();
+    }else if (e.getActionCommand().equals("Paste")){
+        jta.paste();
+    }else if (e.getActionCommand().equals("About Notepad")){
+        JOptionPane.showMessageDialog(this, "Created", "Notepad", JOptionPane.INFORMATION_MESSAGE);
+    }else if (e.getActionCommand().equals("Cut")){
+        jta.cut();
+    }
+    //buraaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    else if (e.getActionCommand().equals("Save As")){
+
+        jfc.setSelectedFile(new File("Untitled.txt"));
+        
         int ret = jfc.showSaveDialog(null);
 
         if (ret == JFileChooser.APPROVE_OPTION){
@@ -114,16 +154,6 @@ public void actionPerformed(ActionEvent e){
             }catch(Exception ets){}
             
         }        
-    }else if (e.getActionCommand().equals("Exit")){
-        Exiting();
-    }else if (e.getActionCommand().equals("Copy")){
-        jta.copy();
-    }else if (e.getActionCommand().equals("Paste")){
-        jta.paste();
-    }else if (e.getActionCommand().equals("About Notepad")){
-        JOptionPane.showMessageDialog(this, "Created", "Notepad", JOptionPane.INFORMATION_MESSAGE);
-    }else if (e.getActionCommand().equals("Cut")){
-        jta.cut();
     }
 
   
